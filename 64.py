@@ -1,4 +1,4 @@
-from math import isqrt, sqrt
+from math import isqrt
 
 # Source: https://en.wikipedia.org/wiki/Integer_square_root#continued_fraction_sqrt_Python
 def continued_fraction_sqrt(n: int):
