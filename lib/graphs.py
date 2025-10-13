@@ -2,7 +2,7 @@ from collections.abc import Iterable
 
 '''Graphs module'''
 
-from typing import Hashable, TypeVar, Generic
+from typing import Callable, Generator, Hashable, TypeVar, Generic
 
 T = TypeVar('T', bound=Hashable)  # Type alias for graph nodes
 
@@ -42,7 +42,7 @@ class DiGraph(Graph):
     
     def successors(self, node: T) -> set[T]:
         return self.adj.get(node, set())
-    
+
     def is_acylcic(self) -> bool:
         visited = set()
         rec_stack = set()
