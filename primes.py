@@ -1,6 +1,6 @@
 '''Prime module, with different functions for prime calculations.'''
 
-def getPrimes(n):
+def sieve(n):
     '''Get primes up to the given number.'''
     sieve = [True] * (n + 1)
     sieve[0] = False
@@ -11,14 +11,12 @@ def getPrimes(n):
         if not prime:
             continue
         primes.append(p)
-        if p == 73:
-            pass
         for q in range(p, n + 1, p):
             sieve[q] = False
     
     return primes
 
-def isPrime(p):
+def is_prime(p):
     '''Check whether the given number is a prime.'''
     if p % 2 == 0:
         return False

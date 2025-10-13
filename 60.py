@@ -1,9 +1,9 @@
-from primes import getPrimes, isPrime
+from primes import sieve, is_prime
 from itertools import combinations
 from graphs import Graph
 
 def solve() -> None:
-    primes = getPrimes(10 ** 7)
+    primes = sieve(10 ** 7)
     prime_graph = Graph()
 
     for p in primes:
@@ -16,7 +16,7 @@ def solve() -> None:
                 continue
             pq = int(str(p) + str(q))
             qp = int(str(q) + str(p))
-            if isPrime(pq) and isPrime(qp):
+            if is_prime(pq) and is_prime(qp):
                 prime_graph.add_edge(p, q)
                 neighbors.add(q)
         
