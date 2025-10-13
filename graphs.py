@@ -1,74 +1,68 @@
+from collections.abc import Iterable
+
 '''Graphs module'''
 
-class Graph:
-    '''Graph class, with different functions for graph calculations.'''
-    
+from typing import Hashable, TypeVar, Generic
+
+T = TypeVar('T', bound=Hashable)  # Type alias for graph nodes
+
+class Graph(Generic[T]):
     def __init__(self):
-        self.V = set()
-        self.E = set()
+        self.adj: dict[T, set[T]] = {}
     
-    def addVertex(self, v):
-        if v in self.V:
-            raise ValueError("Vertex already exists in the graph.")
-        self.V.add(v)
-    
-    def addEdge(self, u, v):
-        if (u > v):
-            u, v = v, u
-        if u not in self.V or v not in self.V:
-            raise ValueError("Both vertices must be in the graph.")
-        if (u == v):
-            raise ValueError("No self loops allowed.")
-        if (u, v) in self.E:
-            raise ValueError("Edge already exists in the graph.")
-        self.E.add((u, v))
+    def nodes(self) -> set[T] : return set(self.adj.keys())
 
-    def getDegree(self, v):
-        if v not in self.V:
-            raise ValueError("Vertex must be in the graph.")
-        degree = 0
-        for u, w in self.E:
-            if u == v or w == v:
-                degree += 1
-        return degree
-    
-    def getNeighbors(self, v):
-        if v not in self.V:
-            raise ValueError("Vertex must be in the graph.")
-        return [u if w == v else w for u, w in self.E if u == v or w == v]
+    def add_node(self, node: T) -> None:
+        self.adj.setdefault(node, set())
 
-    def removeVertex(self, v):
-        if v not in self.V:
-            raise ValueError("Vertex must be in the graph.")
-        self.V.remove(v)
-        self.E = [(u, w) for u, w in self.E if u != v and w != v]
+    def add_edge(self, u: T, v: T) -> None:
+        self.add_node(u)
+        self.add_node(v)
+        self.adj[u].add(v)
+        self.adj[v].add(u)
+
+    def neighbors(self, node: T) -> set[T]:
+        return self.adj.get(node, set())
     
-    def removeEdge(self, u, v):
-        if (u > v):
-            u, v = v, u
-        if (u, v) not in self.E:
-            raise ValueError("Edge must be in the graph.")
-        self.E.remove((u, v))
-    
-    def getSubgraph(self, vertices):
-        subgraph = Graph()
-        for v in vertices:
-            if v not in self.V:
-                raise ValueError("All vertices must be in the graph.")
-            subgraph.addVertex(v)
-        for u, v in self.E:
-            if u in vertices and v in vertices:
-                subgraph.addEdge(u, v)
-        return subgraph
-    
-    def isClique(self, vertices):
-        for vi in vertices:
-            for vj in vertices:
-                if vi == vj:
-                    continue
-                if (vi, vj) not in self.E and (vj, vi) not in self.E:
+    def is_clique(self, nodes: Iterable[T]) -> bool:
+        for u in nodes:
+            for v in nodes:
+                if u != v and v not in self.neighbors(u):
                     return False
         return True
+    
+class DiGraph(Graph):
+    def add_edge(self, u: T, v: T) -> None:
+        self.add_node(u)
+        self.add_node(v)
+        self.adj[u].add(v)
 
-    def __str__(self):
-        return f"G=(V={self.V}, E={self.E})"
+    def predecessors(self, node: T) -> set[T]:
+        return {u for u, vs in self.adj.items() if node in vs}
+    
+    def successors(self, node: T) -> set[T]:
+        return self.adj.get(node, set())
+    
+    def is_acylcic(self) -> bool:
+        visited = set()
+        rec_stack = set()
+
+        def visit(v: Hashable) -> bool:
+            if v in rec_stack:
+                return False
+            if v in visited:
+                return True
+            
+            visited.add(v)
+            rec_stack.add(v)
+            for neighbor in self.successors(v):
+                if not visit(neighbor):
+                    return False
+            rec_stack.remove(v)
+            return True
+
+        for node in self.nodes():
+            if node not in visited:
+                if not visit(node):
+                    return False
+        return True
