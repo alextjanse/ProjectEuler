@@ -4,8 +4,8 @@ class Rational:
     def __init__(self, nom: int, denom: int = 1):
         if denom == 0:
             raise ValueError(denom, "can't be zero")
-        self.nom: int = nom // d
-        self.denom: int = denom // d
+        self.nom: int = nom
+        self.denom: int = denom
 
     def __add__(self, other: "Rational"):
         return Rational(self.nom * other.denom + self.denom * other.nom, self.denom * other.denom)
