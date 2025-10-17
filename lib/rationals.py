@@ -4,10 +4,9 @@ class Rational:
     def __init__(self, nom: int, denom: int = 1):
         if denom == 0:
             raise ValueError(denom, "can't be zero")
-        d = gcd(nom, denom)
         self.nom: int = nom // d
         self.denom: int = denom // d
-    
+
     def __add__(self, other: "Rational"):
         return Rational(self.nom * other.denom + self.denom * other.nom, self.denom * other.denom)
     
@@ -51,9 +50,19 @@ class Rational:
     
     def __gt__(self, other: "Rational"):
         return self.nom * other.denom > self.denom * other.nom
+    
+    def normalize(self):
+        g = gcd(self.nom, self.denom)
+        self.nom //= g
+        self.denom //= g
 
     def __float__(self):
         return self.nom / self.denom
+    
+    def __int__(self):
+        if self.nom % self.denom != 0:
+            print("rounding error")
+        return self.nom // self.denom
 
     def __repr__(self):
         return f"Rational({self.nom}, {self.denom})"

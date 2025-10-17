@@ -1,11 +1,11 @@
-from lib.primes import is_prime, get_primes
+from lib.primes import is_prime, primes
 from itertools import combinations
 from lib.graphs import Graph
 
 def solve() -> None:
     prime_graph = Graph()
 
-    for p in get_primes():
+    for p in primes():
         print("Checking prime", p)
 
         prime_graph.add_node(p)
