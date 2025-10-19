@@ -1,4 +1,4 @@
-from lib.fractions import ContinuedFraction
+from lib.cont_fractions import ContinuedFraction
 
 def solve():
     a0 = 2
@@ -13,7 +13,6 @@ def solve():
 
     value = f.value(100)
 
-    print(value)
     i = value.numerator
     s = 0
     while i > 0:

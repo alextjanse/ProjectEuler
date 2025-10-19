@@ -1,28 +1,29 @@
 from math import isqrt
-# from gmpy2 import is_square
+from lib.cont_fractions import ContinuedFraction, sqrt_continued_fraction
 
 def is_square(n: int) -> bool:
     root = isqrt(n)
     return root * root == n
 
-def solve(d_max: int = 1000) -> int:
-    ds = { d for d in range(1, d_max + 1) if not is_square(d) }
+def solve(D = 1000):
+    x_max, d_max = 0, 0
 
-    x2_max, d_max, y = 0, 0, 1
-    while ds:
-        for d in set(ds):
-            x2 = (d * y * y) + 1
-            if is_square(x2):
-                ds.remove(d)
-                print(isqrt(x2), '-', d, y, len(ds))
-                if x2 > x2_max:
-                    x2_max, d_max = x2, d
-        y += 1
+    for d in range(1, D + 1):
+        if is_square(d):
+            continue
+
+        frac = sqrt_continued_fraction(d)
+
+        period_length = len(frac.period)
+        
+        solution = frac.value(period_length) if period_length % 2 == 0 else frac.value(2 * period_length)
+
+        x = solution.numerator
+        
+        if x > x_max:
+            x_max, d_max = x, d
     
-    y2_max = (x2_max - 1) // d_max
-    print(isqrt(x2_max), d_max, isqrt(y2_max), x2_max, y2_max, x2_max - d_max * y2_max)
-
-    return isqrt(x2_max)
+    print(d_max, x_max)
 
 if __name__ == "__main__":
     solve()
