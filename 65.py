@@ -1,15 +1,26 @@
-from lib.rationals import Rational
+from lib.fractions import ContinuedFraction
 
-class InfiniteContinuedFraction:
-    def __init__(self, head: int, tail: list[int]) -> None:
-        self.head = head
-        self.tail = tail
+def solve():
+    a0 = 2
+
+    period = []
+    k = 2
+    while len(period) < 100:
+        period += [1, k, 1]
+        k += 2
     
-    def value(self, n):
-        value = self.head
-        yield value
+    f = ContinuedFraction(a0, period)
 
-        tail = Rational
-        for a in self.tail:
+    value = f.value(100)
 
+    print(value)
+    i = value.numerator
+    s = 0
+    while i > 0:
+        s += i % 10
+        i //= 10
 
+    print(s)
+
+if __name__ == "__main__":
+    solve()
