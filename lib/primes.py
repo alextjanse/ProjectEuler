@@ -1,6 +1,8 @@
 '''Prime module, with different functions for prime calculations.'''
 
 from collections import Counter
+from functools import reduce
+import operator
 
 prime_list = [2, 3]
 prime_set = set(prime_list)
@@ -42,7 +44,7 @@ def primes():
         yield p
 
 def prime_factors(n: int) -> dict[int, int]:
-    factors = Counter()
+    factors: Counter[int] = Counter()
 
     for p in primes():
         if n == 1:
@@ -52,7 +54,12 @@ def prime_factors(n: int) -> dict[int, int]:
             factors[p] += 1
             n //= p
 
-    return dict(factors)
+    return factors
+
+def reduce_factors(factors: dict[int, int]) -> int:
+    return reduce(operator.mul, map(lambda f: f[0] ** f[1], factors.items()), 1)
 
 if __name__ == "__main__":
-    print(prime_factors(12))
+    factors = prime_factors(12345)
+    print(factors)
+    print(reduce_factors(factors))
