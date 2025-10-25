@@ -60,6 +60,8 @@ def reduce_factors(factors: dict[int, int]) -> int:
     return reduce(operator.mul, map(lambda f: f[0] ** f[1], factors.items()), 1)
 
 def phi(n: int) -> int:
+    if n < 1: raise ValueError(n, "has to be larger than 0")
+    elif n == 1: return 1
     x = 1
     for p, m in prime_factors(n).items():
         x *= p ** (m - 1) * (p - 1)
