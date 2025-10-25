@@ -59,6 +59,12 @@ def prime_factors(n: int) -> dict[int, int]:
 def reduce_factors(factors: dict[int, int]) -> int:
     return reduce(operator.mul, map(lambda f: f[0] ** f[1], factors.items()), 1)
 
+def phi(n: int) -> int:
+    x = 1
+    for p, m in prime_factors(n).items():
+        x *= p ** (m - 1) * (p - 1)
+    return x
+
 if __name__ == "__main__":
     factors = prime_factors(12345)
     print(factors)

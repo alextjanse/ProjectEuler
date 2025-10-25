@@ -1,11 +1,5 @@
-from lib.primes import prime_factors
+from lib.primes import prime_factors, phi
 from fractions import Fraction
-
-def phi(n: int) -> int:
-    x = 1
-    for p, m in prime_factors(n).items():
-        x *= p ** (m - 1) * (p - 1)
-    return x
 
 def solve():
     n_max, n_phi_max = 0, 0
