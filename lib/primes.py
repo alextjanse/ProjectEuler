@@ -13,19 +13,13 @@ def is_prime(n: int) -> bool:
     if n <= p_max:
         return n in prime_set
     
-    if p_max * p_max >= n:
-        for p in prime_list:
-            if p * p > n:
-                break
-            if n % p == 0:
-                return False
-        return True
-    
-    prime_gen = next_prime()
-    while p_max < n:
-        p_max = next(prime_gen)
-    
-    return p_max == n
+    for p in primes():
+        if p * p > n:
+            break
+        if n % p == 0:
+            return False
+
+    return True
 
 def next_prime():
     p = prime_list[-1] + 2
@@ -68,6 +62,6 @@ def phi(n: int) -> int:
     return x
 
 if __name__ == "__main__":
-    factors = prime_factors(12345)
-    print(factors)
-    print(reduce_factors(factors))
+    for i in range(100):
+        if is_prime(i):
+            print(i)
