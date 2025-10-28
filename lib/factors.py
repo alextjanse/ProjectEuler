@@ -1,7 +1,7 @@
 from functools import reduce
 from math import isqrt
 import operator
-from primes import primes
+from .primes import primes
 from collections import Counter, defaultdict
 
 def factorize(n: int) -> dict[int, int]:
@@ -27,6 +27,12 @@ def phi(n: int) -> int:
     for p, m in factorize(n).items():
         x *= p ** (m - 1) * (p - 1)
     return x
+
+def phi_factors(factors: dict[int, int]) -> int:
+    f = 1
+    for p, n in factors.items():
+        f *= p ** (n - 1) * (p - 1)
+    return f
 
 '''
 Get the prime factors of all numbers up to n.
