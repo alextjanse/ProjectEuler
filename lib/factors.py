@@ -1,7 +1,7 @@
 from functools import reduce
 from math import isqrt
 import operator
-from lib.primes import primes
+from primes import primes
 from collections import Counter, defaultdict
 
 def factorize(n: int) -> dict[int, int]:
@@ -37,9 +37,8 @@ def get_factors(n: int) -> dict[int, Counter[int]]:
     active_numbers: set[int] = set()
     root_n = isqrt(n)
     for p in primes():
-        if p > root_n:
+        if p > n:
             break
-
         for i in set(active_numbers):
             fac_n = factors[i]
             if i * p > n:
@@ -48,20 +47,24 @@ def get_factors(n: int) -> dict[int, Counter[int]]:
                 continue
 
             new_factors = Counter(fac_n)
-            m = i * p
-            while m < n:
+            j = i * p
+            while j <= n:
                 new_factors[p] += 1
-                factors[m] = Counter(new_factors) # Copy
-                active_numbers.add(m)
-                m *= p
+                factors[j] = Counter(new_factors) # Copy
+                active_numbers.add(j)
+                j *= p
 
         # add p and powers of p
         new_factors = Counter([p])
         i = p
-        while i < n:
+        while i <= n:
             factors[i] = Counter(new_factors)
             active_numbers.add(i)
             i *= p
             new_factors[p] += 1
 
     return factors
+
+if __name__ == "__main__":
+    for n, fac in get_factors(1000).items():
+        print(n, fac)
