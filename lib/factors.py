@@ -34,43 +34,32 @@ def phi_factors(factors: dict[int, int]) -> int:
         f *= p ** (n - 1) * (p - 1)
     return f
 
-'''
-Get the prime factors of all numbers up to n.
-'''
-def get_factors(n: int) -> dict[int, Counter[int]]:
+def get_factors(n_max: int) -> dict[int, Counter[int]]:
     factors: dict[int, Counter[int]] = defaultdict(Counter)
 
-    active_numbers: set[int] = set()
-    root_n = isqrt(n)
+    new_numbers: dict[int, Counter[int]] = defaultdict(Counter)
     for p in primes():
-        if p > n:
-            break
-        for i in set(active_numbers):
-            fac_n = factors[i]
-            if i * p > n:
-                # next p will also be bigger than max, remove it
-                active_numbers.remove(i)
-                continue
-
-            new_factors = Counter(fac_n)
-            j = i * p
-            while j <= n:
-                new_factors[p] += 1
-                factors[j] = Counter(new_factors) # Copy
-                active_numbers.add(j)
-                j *= p
-
-        # add p and powers of p
-        new_factors = Counter([p])
-        i = p
-        while i <= n:
-            factors[i] = Counter(new_factors)
-            active_numbers.add(i)
-            i *= p
-            new_factors[p] += 1
+        if p > n_max: break
+        for n, f in factors.items():
+            if p > n_max: break
+            i = n * p
+            f_i = Counter(f)
+            while i <= n_max:
+                f_i[p] += 1
+                new_numbers[i] = Counter(f_i)
+                i *= p
+        factors.update(new_numbers)
+        new_numbers.clear()
+        
+        f = Counter([p])
+        n = p
+        while n <= n_max:
+            factors[n] = Counter(f)
+            n *= p
+            
 
     return factors
 
 if __name__ == "__main__":
-    for n, fac in get_factors(1000).items():
+    for n, fac in get_factors2(1000).items():
         print(n, fac)
