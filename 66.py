@@ -1,5 +1,4 @@
 from math import isqrt
-from typing import Tuple
 from lib.cont_fractions import sqrt_continued_fraction
 
 def is_square(n: int) -> bool:
