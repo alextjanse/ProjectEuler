@@ -66,7 +66,3 @@ def get_factors(n_max: int, p_max = None) -> Generator[Tuple[int, Counter[int]],
             n *= p
             
     return factors
-
-if __name__ == "__main__":
-    for n, fac in get_factors2(1000).items():
-        print(n, fac)
