@@ -1,7 +1,7 @@
 '''
 p / q: query frac
 n / d, st. n / d < p / q => qn < pd
-Observation: in example, pd = qn + 1 for nbs -> n = (pd - 1) / q
+Observation: in example, qn = pd - 1 for nbs -> n = (pd - 1) / q
 If round down, it holds qn < pd
 Find opt n,d
 '''
