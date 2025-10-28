@@ -1,6 +1,7 @@
 from functools import reduce
 from math import isqrt
 import operator
+from typing import Generator, Tuple
 from .primes import primes
 from collections import Counter, defaultdict
 
@@ -34,30 +35,36 @@ def phi_factors(factors: dict[int, int]) -> int:
         f *= p ** (n - 1) * (p - 1)
     return f
 
-def get_factors(n_max: int) -> dict[int, Counter[int]]:
+def get_factors(n_max: int, p_max = None) -> Generator[Tuple[int, Counter[int]], None, dict[int, Counter[int]]]:
+    p_max = p_max or n_max
     factors: dict[int, Counter[int]] = defaultdict(Counter)
-
-    new_numbers: dict[int, Counter[int]] = defaultdict(Counter)
+    number_pool: set[int] = set()
     for p in primes():
-        if p > n_max: break
-        for n, f in factors.items():
-            if p > n_max: break
+        if p > p_max:
+            break
+
+        for n in set(number_pool):
+            if p * n > n_max:
+                number_pool.remove(n)
+                continue
+
+            f = factors[n]
             i = n * p
             f_i = Counter(f)
             while i <= n_max:
                 f_i[p] += 1
-                new_numbers[i] = Counter(f_i)
+                factors[i] = Counter(f_i)
+                number_pool.add(i)
+                yield (i, f_i)
                 i *= p
-        factors.update(new_numbers)
-        new_numbers.clear()
         
         f = Counter([p])
         n = p
         while n <= n_max:
             factors[n] = Counter(f)
+            number_pool.add(n)
             n *= p
             
-
     return factors
 
 if __name__ == "__main__":
