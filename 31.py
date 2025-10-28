@@ -1,4 +1,4 @@
-if __name__ == "__main__":
+def solve():
     counter = 0
 
     states = [(200, [1, 2, 5, 10, 20, 50, 100, 200])]
@@ -20,4 +20,7 @@ if __name__ == "__main__":
             states.append((rem - n * coin, list(coins)))
             n += 1
 
-    print(counter)
+    return counter
+
+if __name__ == "__main__":
+    print(solve())
