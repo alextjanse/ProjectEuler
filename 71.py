@@ -1,21 +1,20 @@
-from math import ceil
-
 '''
 p / q: query frac
-n / d, st. p / q < n / d => pd < qn
-Observation: in example, pd + 1 = qn for right nbs -> n = (pd + 1) / q
-n_min, d_min, where for all n, d: n_min / d_min < n / d -> n_min * d < n * d_min
+n / d, st. n / d < p / q => qn < pd
+Observation: in example, pd = qn + 1 for nbs -> n = (pd - 1) / q
+If round down, it holds qn < pd
+Find opt n,d
 '''
 
-def solve(p, q, d_max=10**6):
-    n_min, d_min = float('inf'), 1
+def solve(p = 3, q = 7, d_max = 10**6):
+    n_opt, d_opt = 0, 1
     for d in range(2, d_max + 1):
-        n = ((p * d + 1) * q) // (q ** 2) # Prevent rounding errors
-        if n * d_min < n_min * d:
-            n_min, d_min = n, d
-    return n_min, d_min
+        if d == q: 
+            continue
+        n = (p * d - 1) // q
+        if n * d_opt > n_opt * d:
+            n_opt, d_opt = n, d
+    return n_opt, d_opt
 
 if __name__ == "__main__":
-    print(solve(2, 5, 8))
-    print(solve(2, 5, 9))
-    print(solve(3, 7, 10**6))
+    print(solve())
