@@ -12,6 +12,8 @@ n / d < p / q -> n * q < p * d
 
 n_min = ceil((a * d + 1) / b)
 n_max = (p * d - 1) // q
+
+valid if n in [n_min, n_max] gcd(n, d) == 1
 '''
 
 def solve(d_max = 12000, lb = (1, 3), ub = (1, 2)):
