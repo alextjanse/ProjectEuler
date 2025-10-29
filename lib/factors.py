@@ -48,9 +48,9 @@ def get_factors(n_max: int, p_max = None) -> Generator[Tuple[int, Counter[int]],
                 number_pool.remove(n)
                 continue
 
-            f = factors[n]
+            f_n = factors[n]
             i = n * p
-            f_i = Counter(f)
+            f_i = Counter(f_n)
             while i <= n_max:
                 f_i[p] += 1
                 factors[i] = Counter(f_i)
@@ -58,11 +58,13 @@ def get_factors(n_max: int, p_max = None) -> Generator[Tuple[int, Counter[int]],
                 yield (i, f_i)
                 i *= p
         
-        f = Counter([p])
         n = p
+        f_n = Counter([p])
         while n <= n_max:
-            factors[n] = Counter(f)
+            factors[n] = Counter(f_n)
             number_pool.add(n)
+            yield (n, f_n)
             n *= p
+            f_n[p] += 1
             
     return factors
