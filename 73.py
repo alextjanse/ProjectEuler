@@ -29,5 +29,4 @@ def solve(d_max = 12000, lb = (1, 3), ub = (1, 2)):
     return count
 
 if __name__ == "__main__":
-    print(solve(8))
     print(solve())
